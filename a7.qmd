@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-```{r, echo = FALSE,message=FALSE}
+```{r,message=FALSE}
 source("sepsis_monitor_functions.R")
 library(ggplot2)
 library(data.table)
@@ -19,7 +19,7 @@ file_link <- "https://drive.google.com/file/d/1plE5TcBTEjxBIpiwfAmntBYo7VUTCLBA"
 ```
 
 
-```{r, echo = FALSE,message=FALSE}
+```{r, message=FALSE}
 # Get the current date and time
 Report last run: `r Sys.time()`
 ## All data up until now
