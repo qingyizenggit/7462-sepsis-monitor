@@ -1,0 +1,58 @@
+---
+title: "A7"
+author: Qingyi Zeng
+format: html
+editor: visual
+---
+
+```{r, echo = FALSE,message=FALSE}
+source("sepsis_monitor_functions.R")
+library(ggplot2)
+library(data.table)
+library(stats)
+library(dplyr)
+library(googledrive)
+library(tidyverse)
+library(gt)
+drive_deauth()
+file_link <- "https://drive.google.com/file/d/1plE5TcBTEjxBIpiwfAmntBYo7VUTCLBA"
+```
+
+
+```{r, echo = FALSE,message=FALSE}
+# Get the current date and time
+now <- Sys.time()
+# Format the date and time
+date <- format(now, "%Y-%m-%d")
+time <- format(now, "%H:%M:%S")
+# Print the date and time
+cat("Report generated on", date, "at", time, "\n")
+
+## All data up until now
+new_data <- updateData(file_link)
+## Include only most recent data
+most_recent_data <- new_data %>%
+  group_by(PatientID) %>%
+  filter(obsTime == max(obsTime))
+## the patients who currently have sepsis
+inf <-  new_data%>% group_by(PatientID) %>% filter(any(SepsisLabel==1)) 
+patients <- new_data %>% group_by(PatientID) %>% filter(any(SepsisLabel==1)) %>%
+filter(obsTime == max(obsTime)) 
+patients %>% select(PatientID, HR, Temp, Resp)  %>% gt() %>% tab_header(title = md("Patients who currently have sepsis (if any), along with their most recent heart rate, temperature, and respiratory rate"))
+
+# the complete history of their heart rate, temperature, and respiratory rate during their time in the ICU. 
+ggplot(inf, aes(obsTime, HR,colour=PatientID)) + geom_point()+geom_line(data=inf[!is.na(inf$HR),]) + labs(title="Plot of heart rate during time in ICU", x ="Time", y = "Heart rate")
+ggplot(inf, aes(obsTime, Temp,colour=PatientID)) + geom_point()+geom_line(data=inf[!is.na(inf$Temp),]) + labs(title="Plot of temperature during time in ICU", x ="Time", y = "Temperature")
+ggplot(inf, aes(obsTime, Resp,colour=PatientID)) + geom_point()+geom_line(data=inf[!is.na(inf$Resp),]) +labs(title="Plot of respiratory rate during time in ICU", x ="Time", y = "Respiratory rate")
+
+#  change in heart rate, temperature, and respiratory rate between the last two measurements for all patients
+change <- new_data %>% group_by(PatientID) %>% summarize(HR_Change = last(HR) - last(lag(HR)),
+                     Temp_Change = last(Temp) - last(lag(Temp)),
+                     Resp_Change = last(Resp) - last(lag(Resp))) 
+change %>% gt() %>% tab_header(title = md("Change in heart rate, temperature, and respiratory rate between the last two measurements for all patients"))
+
+```
+
+```{r}
+
+```

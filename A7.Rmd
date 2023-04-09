@@ -1,0 +1,61 @@
+---
+title: "A7"
+author: "Qingyi Zeng"
+date: "2023-04-08"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(data.table) ## For the fread function
+library(lubridate)
+source("sepsis_monitor_functions.R")
+```
+##T2
+Use the tictoc package, write some code to compare the amount of time taken to create sepsis datasets with 50, 100, and 500 patients when using fread vs. read_delim
+```{r}
+require(tictoc)
+tic()
+makeSepsisDataset(50,"fread")
+toc()
+
+tic()
+makeSepsisDataset(50,"read_delim")
+toc()
+
+tic()
+makeSepsisDataset(100,"fread")
+toc()
+
+tic()
+makeSepsisDataset(100,"read_delim")
+toc()
+
+tic()
+makeSepsisDataset(500,"fread")
+toc()
+
+tic()
+makeSepsisDataset(500,"read_delim")
+toc()
+```
+##T3
+```{r}
+# Uploading happens here
+library(googledrive)
+
+df <- makeSepsisDataset()
+
+# We have to write the file to disk first, then upload it
+df %>% write_csv("sepsis_data_temp.csv")
+df
+# Uploading happens here
+sepsis_file <- drive_put(media = "sepsis_data_temp.csv", 
+          path = "https://drive.google.com/drive/folders/1cjpCGdTZl6iJcAvWMuj0mAgCtsFNJroS",
+          name = "sepsis_data.csv")
+
+# Set the file permissions so anyone can download this file.
+sepsis_file %>% drive_share_anyone()
+```
+
+ˆ
