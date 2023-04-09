@@ -21,13 +21,7 @@ file_link <- "https://drive.google.com/file/d/1plE5TcBTEjxBIpiwfAmntBYo7VUTCLBA"
 
 ```{r, echo = FALSE,message=FALSE}
 # Get the current date and time
-now <- Sys.time()
-# Format the date and time
-date <- format(now, "%Y-%m-%d")
-time <- format(now, "%H:%M:%S")
-# Print the date and time
-cat("Report generated on", date, "at", time, "\n")
-
+Report last run: `r Sys.time()`
 ## All data up until now
 new_data <- updateData(file_link)
 ## Include only most recent data
@@ -53,6 +47,3 @@ change %>% gt() %>% tab_header(title = md("Change in heart rate, temperature, an
 
 ```
 
-```{r}
-
-```
