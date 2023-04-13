@@ -41,6 +41,8 @@ jobs:
                any::googledrive
                any::tidyverse
                any::gt
+               any::stats
+ 
  
       - name: Checkout repository
         uses: actions/checkout@v2
