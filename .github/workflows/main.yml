@@ -42,6 +42,7 @@ jobs:
                any::ggthemes
                any::stringr
                any::purrr
+               any::googledrive
       - name: Step 1 Render report
         uses: quarto-dev/quarto-actions/render@v2
         env:
