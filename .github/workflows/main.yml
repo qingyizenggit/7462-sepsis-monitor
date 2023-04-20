@@ -1,16 +1,11 @@
-name: Hourly Workflow
+on: [workflow_dispatch]
 
-on:
-  schedule:
-    - cron: '0 * * * *'
-  push:
-    branches: main
-  workflow_dispatch:
+name: Step 1 Render Report
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-  
+    
     permissions:
         contents: write
         
@@ -35,23 +30,25 @@ jobs:
                any::dplyr
                any::ggplot2
                any::lubridate
-               any::googledrive
-               any::data.table
-               any::tidyr
+               any::googleway
+               any::purrr
+               any::gepaf
                any::gt
-               any::stats
- 
- 
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-
-
-      - name: Render document
+               any::paletteer
+               any::plotly
+               any::osmdata
+               any::ggmap
+               any::tidycensus
+               any::ggthemes
+               any::stringr
+               any::purrr
+      - name: Step 1 Render report
         uses: quarto-dev/quarto-actions/render@v2
+        env:
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
         with:
           to: html
-          path: a7.qmd
+          path: hw8.qmd
       - name: Setup git config
         run: |
           git config user.name "GitHub Actions Bot"
