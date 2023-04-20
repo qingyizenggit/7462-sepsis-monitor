@@ -43,6 +43,7 @@ jobs:
                any::stringr
                any::purrr
                any::googledrive
+               any:tidyverse
       - name: Step 1 Render report
         uses: quarto-dev/quarto-actions/render@v2
         env:
