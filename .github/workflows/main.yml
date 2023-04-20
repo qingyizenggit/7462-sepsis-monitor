@@ -25,25 +25,14 @@ jobs:
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
             packages:
-               any::knitr
-               any::rmarkdown
-               any::dplyr
-               any::ggplot2
-               any::lubridate
-               any::googleway
-               any::purrr
-               any::gepaf
-               any::gt
-               any::paletteer
-               any::plotly
-               any::osmdata
-               any::ggmap
-               any::tidycensus
-               any::ggthemes
-               any::stringr
-               any::purrr
-               any::googledrive
-               any:tidyverse
+              any::ggplot2
+              any::data.table
+              any::stats
+              any::dplyr
+              any::googledrive
+              any::tidyverse
+              any::gt
+              
       - name: Step 1 Render report
         uses: quarto-dev/quarto-actions/render@v2
         env:
